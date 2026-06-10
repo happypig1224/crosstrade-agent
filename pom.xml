@@ -34,6 +34,7 @@
         <springdoc.version>2.8.6</springdoc.version>
         <hutool.version>5.8.34</hutool.version>
         <milvus-sdk.version>2.4.4</milvus-sdk.version>
+        <redis.version>3.49.0</redis.version>
         <lombok.version>1.18.30</lombok.version>
         <junit.version>5.10.2</junit.version>
         <nimbus-jose-jwt.version>9.37.3</nimbus-jose-jwt.version>
@@ -53,10 +54,17 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- Spring AI Alibaba -->
+            <!-- Spring AI Alibaba DashScope -->
             <dependency>
                 <groupId>com.alibaba.cloud.ai</groupId>
                 <artifactId>spring-ai-alibaba-starter-dashscope</artifactId>
+                <version>${spring-ai-alibaba.version}</version>
+            </dependency>
+
+            <!-- Spring AI Alibaba Agent -->
+            <dependency>
+                <groupId>com.alibaba.cloud.ai</groupId>
+                <artifactId>spring-ai-alibaba-agent-framework</artifactId>
                 <version>${spring-ai-alibaba.version}</version>
             </dependency>
 
@@ -115,6 +123,13 @@
                 <version>${hutool.version}</version>
             </dependency>
 
+            <!-- Redis Redisson -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redis.version}</version>
+            </dependency>
+
             <!-- Milvus SDK -->
             <dependency>
                 <groupId>io.milvus</groupId>
@@ -137,89 +152,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring-boot.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin.version}</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                        <annotationProcessorPaths>
-                            <path>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                                <version>${lombok.version}</version>
-                            </path>
-                        </annotationProcessorPaths>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>${maven-enforcer-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>enforce-gav-consistency</id>
-                            <goals>
-                                <goal>enforce</goal>
-                            </goals>
-                            <configuration>
-                                <rules>
-                                    <requireProperty>
-                                        <property>project.groupId</property>
-                                        <message>所有模块必须使用统一 groupId: com.crosstrade</message>
-                                        <regex>com\.crosstrade</regex>
-                                        <regexMessage>groupId 必须为 com.crosstrade</regexMessage>
-                                    </requireProperty>
-                                    <requireProperty>
-                                        <property>project.version</property>
-                                        <message>所有模块必须使用统一版本号</message>
-                                        <regex>\d+\.\d+\.\d+</regex>
-                                        <regexMessage>版本号必须为 x.y.z 格式，禁止使用 0.0.1-SNAPSHOT</regexMessage>
-                                    </requireProperty>
-                                    <banDuplicateClasses>
-                                        <ignoreClasses>
-                                            <ignoreClass>module-info</ignoreClass>
-                                            <ignoreClass>shaded.parquet.*</ignoreClass>
-                                            <ignoreClass>org.apache.commons.logging.*</ignoreClass>
-                                            <ignoreClass>org.apache.logging.slf4j.*</ignoreClass>
-                                        </ignoreClasses>
-                                        <findAllDuplicates>true</findAllDuplicates>
-                                    </banDuplicateClasses>
-                                </rules>
-                                <fail>true</fail>
-                            </configuration>
-                        </execution>
-                    </executions>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>extra-enforcer-rules</artifactId>
-                            <version>1.9.0</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

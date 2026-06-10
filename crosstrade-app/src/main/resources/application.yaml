@@ -1,44 +1,134 @@
 server:
   port: 8088
+
 spring:
   application:
     name: crosstrade-agent
 
- # dashscope配置
+  # DashScope大模型配置
   ai:
     dashscope:
       api-key: ${DASHSCOPE_API_KEY}
       chat:
         options:
-          model: qwen-3.6
+          model: qwen3.7-max
           temperature: 0.7
           top-p: 0.9
           max-tokens: 1024
       embedding:
         options:
           model: text-embedding-v3
-  # mysql配置
+
+  # MySQL数据源配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/crosstrade_agent?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: root
 
-  # redis配置
+  # Redis配置
   data:
     redis:
       host: localhost
       port: 6379
       password: 123456
+      lettuce:
+        pool:
+          max-active: 64
+          max-idle: 16
+          min-idle: 4
+          max-wait: 3000ms
 
-# rocketmq配置
+# RocketMQ配置
 rocketmq:
   name-server: 127.0.0.1:9876
   producer:
     group: crosstrade-agent-producer
+    send-message-timeout: 3000
+    retry-times-when-send-failed: 2
   consumer:
     group: crosstrade-agent-consumer
 
+# Milvus配置（自定义）
+milvus:
+  host: 127.0.0.1
+  port: 19530
+  token: ${MILVUS_TOKEN:}
+
+# Redisson配置（自定义）
+redisson:
+  address: redis://localhost:6379
+  password: 123456
+
+# Resilience4j配置
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 60s
+        permitted-number-of-calls-in-half-open-state: 3
+        minimum-number-of-calls: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+    instances:
+      chatLlm:
+        base-config: default
+        failure-rate-threshold: 50
+      smallLlm:
+        base-config: default
+        failure-rate-threshold: 60
+      milvus:
+        base-config: default
+        failure-rate-threshold: 50
+      discountMatrix:
+        base-config: default
+        failure-rate-threshold: 30
+  retry:
+    configs:
+      default:
+        max-attempts: 3
+        wait-duration: 1s
+        retry-exceptions:
+          - java.lang.Exception
+    instances:
+      intentLlm:
+        max-attempts: 2
+        wait-duration: 1s
+      chatLlm:
+        max-attempts: 3
+        wait-duration: 1s
+      mqProducer:
+        max-attempts: 3
+        wait-duration: 1s
+      discountMatrix:
+        max-attempts: 2
+        wait-duration: 500ms
+  timelimiter:
+    instances:
+      intentLlm:
+        timeout-duration: 3s
+
+# 定时任务开关
+schedule:
+  portrait-update-enabled: true
+  archive-enabled: true
+
+# SpringDoc OpenAPI配置
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+# 日志配置
 logging:
   level:
-    com.alibaba.cloud.ai.dashscope.chat : debug
+    com.crosstrade: DEBUG
+    org.springframework.ai: INFO
+    io.milvus: WARN
+    org.apache.rocketmq: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{traceId}] %-5level %logger{36} - %msg%n"

@@ -20,10 +20,16 @@
             <artifactId>crosstrade-common</artifactId>
         </dependency>
 
-        <!-- Spring AI Alibaba -->
+        <!-- Spring AI Alibaba DashScope -->
         <dependency>
             <groupId>com.alibaba.cloud.ai</groupId>
             <artifactId>spring-ai-alibaba-starter-dashscope</artifactId>
+        </dependency>
+
+        <!--Spring AI Alibaba Agent-->
+        <dependency>
+            <groupId>com.alibaba.cloud.ai</groupId>
+            <artifactId>spring-ai-alibaba-agent-framework</artifactId>
         </dependency>
 
         <!-- Redis (L1短期记忆) -->
@@ -60,6 +66,12 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
+        </dependency>
+
+        <!--Redisson分布式锁-->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
         </dependency>
 
         <!-- Lombok -->
