@@ -3,11 +3,24 @@ target/
 *.jar
 *.class
 
-# IDE
+# IDE & Editor
 .idea/
 *.iml
 .vscode/
 .arts/
+.opencode/
+.codeartsdoer/
+
+# Frontend
+crosstrade-web/node_modules/
+crosstrade-web/dist/
+crosstrade-web/dist-ssr/
+*.local
+crosstrade-web/coverage/
+
+# Environment & Secrets
+.env
+.env.*.local
 
 # OS
 .DS_Store

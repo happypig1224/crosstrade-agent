@@ -64,8 +64,8 @@
 
         <!-- Micrometer (可观测性指标) -->
         <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-core</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
         <!--Redisson分布式锁-->

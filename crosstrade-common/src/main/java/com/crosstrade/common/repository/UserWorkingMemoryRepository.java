@@ -2,6 +2,7 @@ package com.crosstrade.common.repository;
 
 import com.crosstrade.common.entity.UserWorkingMemory;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * 用户画像Repository
@@ -11,4 +12,5 @@ import org.springframework.data.repository.CrudRepository;
  * @School Suihua University
  */
 public interface UserWorkingMemoryRepository extends CrudRepository<UserWorkingMemory, String> {
+
 }

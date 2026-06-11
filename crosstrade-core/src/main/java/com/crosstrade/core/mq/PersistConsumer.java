@@ -10,6 +10,8 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 /**
  * 对话持久化MQ消费者
  * 消费持久化Topic消息，将对话记录异步写入MySQL
@@ -45,6 +47,7 @@ public class PersistConsumer implements RocketMQListener<PersistMessage> {
         userHistory.setRole("user");
         userHistory.setContent(persistMsg.getUserMessage());
         userHistory.setRawTokens(0);
+        userHistory.setCreatedAt(LocalDateTime.now());
         chatHistoryRepository.save(userHistory);
 
         // 写入AI回复
@@ -54,6 +57,7 @@ public class PersistConsumer implements RocketMQListener<PersistMessage> {
         aiHistory.setRole("assistant");
         aiHistory.setContent(persistMsg.getAiMessage());
         aiHistory.setRawTokens(persistMsg.getTokens());
+        aiHistory.setCreatedAt(LocalDateTime.now());
         chatHistoryRepository.save(aiHistory);
 
         log.info("对话持久化完成: sessionId={}", persistMsg.getSessionId());

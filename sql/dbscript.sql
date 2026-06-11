@@ -28,6 +28,7 @@ CREATE TABLE `agent_memory_fragments`
     `fragment_text` VARCHAR(1024) NOT NULL COMMENT '脱水后的高密度事实文本，例如：[2026-06-09]用户表达了100件Tent-X1的采购意向，对价格敏感',
     `category`      VARCHAR(32)   NOT NULL DEFAULT 'COMMERCE' COMMENT '记忆领域分类: COMMERCE(商务) / AFTER_SALES(售后) / PERSONAL(个人习惯)',
     `created_at`    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '片段生成时间',
+    `vector_failed` TINYINT(1)    NOT NULL DEFAULT 0 COMMENT '向量写入是否失败，用于补偿重试',
     PRIMARY KEY (`id`),
     INDEX `idx_user_time` (`user_id`, `created_at`),
     INDEX `idx_created_at` (`created_at`)
@@ -43,6 +44,7 @@ CREATE TABLE `user_working_memory`
     `business_habits` TEXT        NOT NULL COMMENT '大模型动态合并的自然语言习惯总结，描绘客户性格、谈判倾向、起订量癖好',
     `tool_preference` JSON        NOT NULL COMMENT '工具调用计数器，用于辅助Agent判断用户的行为偏好',
     `updated_at`      TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '离线反思任务最终更新时间',
+    `version`         BIGINT      NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
     PRIMARY KEY (`user_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4

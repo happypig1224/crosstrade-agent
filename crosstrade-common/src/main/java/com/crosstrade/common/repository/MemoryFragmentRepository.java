@@ -2,6 +2,7 @@ package com.crosstrade.common.repository;
 
 import com.crosstrade.common.entity.MemoryFragment;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;

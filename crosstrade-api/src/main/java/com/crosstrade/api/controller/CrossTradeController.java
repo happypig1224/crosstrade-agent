@@ -18,10 +18,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 核心聊天接口（SSE流式）
- * <p>
- * 提供SSE流式聊天接口和同步聊天接口（调试用）。
- * SSE协议：Server-Sent Events，服务端向客户端单向推送数据，适合流式输出场景。
- *
+ * 提供SSE流式聊天接口和同步聊天接口（调试用）
+ * SSE协议：Server-Sent Events，服务端向客户端单向推送数据，适合流式输出场景
  * @author Wu, Hui Ming
  * @version 1.0
  * @School Suihua University

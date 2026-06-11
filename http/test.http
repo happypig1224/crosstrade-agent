@@ -1,2 +1,11 @@
 ### 测试信息接口
 GET http://localhost:8088/api/synced?message=你好
+### 测试同步接口
+POST http://localhost:8088/api/v1/chat/sync
+Content-Type: application/json
+
+{
+    "sessionId": "488bf3a958ce43d5bc46d37784e91fbb",
+    "userId": "123456",
+    "message": "你好"
+}

@@ -9,7 +9,7 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
     <name>CrossTrade Agent</name>
-    <description>跨境电商智能客服系统</description>
+    <description>基于Spring AI Alibaba多Agent架构的跨境电商智能营销助手，用户发送消息后自动完成安全审查、意图路由、业务Agent执行、输出审查全链路编排，覆盖售前咨询、退货退款、投诉安抚等场景。</description>
 
     <modules>
         <module>crosstrade-common</module>

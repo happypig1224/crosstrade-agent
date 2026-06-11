@@ -1,0 +1,1 @@
+export { REGION_OPTIONS } from '@/api/types'
