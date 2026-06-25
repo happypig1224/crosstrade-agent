@@ -1,0 +1,60 @@
+name: CD Pipeline & Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release version tag (e.g. v1.0.0)'
+        required: false
+        default: 'v1.0.0'
+
+jobs:
+  build-release:
+    name: Build & Package Full Distribution
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: crosstrade-web/package-lock.json
+
+      - name: Build Backend (Spring Boot JAR)
+        run: mvn clean package -DskipTests --no-transfer-progress
+
+      - name: Build Frontend (Vite Dist)
+        working-directory: crosstrade-web
+        run: |
+          npm ci
+          npm run build
+
+      - name: Assemble Release Package
+        run: |
+          mkdir -p release-pkg/backend release-pkg/frontend release-pkg/sql release-pkg/config
+          cp crosstrade-app/target/*.jar release-pkg/backend/
+          cp -r crosstrade-web/dist/* release-pkg/frontend/
+          cp sql/dbscript.sql release-pkg/sql/
+          cp .env.example release-pkg/config/
+          tar -czvf crosstrade-agent-release.tar.gz release-pkg
+
+      - name: Upload Release Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: crosstrade-agent-release
+          path: crosstrade-agent-release.tar.gz
+          retention-days: 30

@@ -4,6 +4,7 @@
 
 <div align="center">
 
+[![CI Pipeline](https://github.com/happypig1224/crosstrade-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/happypig1224/crosstrade-agent/actions/workflows/ci.yml)
 [![Java](https://img.shields.io/badge/Java-17-007396?logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.9-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Spring AI Alibaba](https://img.shields.io/badge/Spring%20AI%20Alibaba-1.1.2.0-FF6A00?logo=alibabacloud&logoColor=white)](https://github.com/alibaba/spring-ai-alibaba)

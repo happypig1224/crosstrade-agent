@@ -23,14 +23,13 @@ describe('Storage Helper', () => {
   })
 
   it('UT-ST-04: should handle localStorage unavailability gracefully', () => {
-    const original = localStorage.setItem
-    localStorage.setItem = vi.fn(() => {
+    const spy = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
       throw new Error('not available')
     })
 
     storage.set('key', 'value')
     expect(storage.get('key')).toBeNull()
 
-    localStorage.setItem = original
+    spy.mockRestore()
   })
 })
